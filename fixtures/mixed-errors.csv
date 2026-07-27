@@ -1,0 +1,9 @@
+ProductID,ProductName,Category,Brand,Price,OriginalPrice,Stock,Rating,ReviewCount,SalesVolume,LaunchDate,Description
+P001,,Electronics,BrandA,99,129,50,4.5,100,50,2024-01-15,Good product
+P002,Valid Product,Electronics,BrandA,-10,129,50,4.5,100,50,2024-01-15,Price is negative
+P003,Another Valid,Electronics,BrandA,99,129,1.5,4.5,100,50,2024-01-15,Stock is float
+P004,Fourth Product,Electronics,BrandA,99,129,50,5.5,100,50,2024-01-15,Rating out of range
+P005,Fifth Product,Electronics,BrandA,99,129,50,4.5,100,50,2025-13-01,Invalid date
+P006,Sixth Product,Electronics,BrandA,99,129,50,4.5,100,50,2024-01-15,Duplicate ProductID
+P006,Duplicate Row,Electronics,BrandA,99,129,50,4.5,100,50,2024-01-15,This is duplicate
+P007,Valid Row,Electronics,BrandA,99,129,50,4.5,100,50,2024-01-15,This row is valid
