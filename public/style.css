@@ -37,6 +37,21 @@ h1 {
 }
 .nav-link:hover { text-decoration: underline; }
 
+/* Prominent button-style entry (e.g. report link on the homepage) */
+.nav-link-btn {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #4a90d9;
+  color: #fff;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.nav-link-btn:hover {
+  background: #357abf;
+  text-decoration: none;
+}
+
 .section-title {
   font-size: 18px;
   color: #1a1a2e;
