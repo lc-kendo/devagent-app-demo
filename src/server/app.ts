@@ -1,12 +1,13 @@
 import express, { Request, Response, NextFunction, Router } from 'express';
 import path from 'path';
 import { importRouter } from './routes/import.routes';
+import { reportRouter } from './routes/report.routes';
 
 interface MulterError extends Error {
   code?: string;
 }
 
-export function createApp(overrideImportRouter?: Router) {
+export function createApp(overrideImportRouter?: Router, overrideReportRouter?: Router) {
   const app = express();
 
   // Middleware
@@ -23,6 +24,9 @@ export function createApp(overrideImportRouter?: Router) {
 
   // Import routes
   app.use('/api/import', overrideImportRouter ?? importRouter);
+
+  // Report routes
+  app.use('/api/report', overrideReportRouter ?? reportRouter);
 
   // Global error handler
   app.use((err: MulterError, _req: Request, res: Response, _next: NextFunction) => {
