@@ -31,7 +31,7 @@ based_on: GitHub Issue #2
 - **接口层** `src/server/routes/report.routes.ts`：`createReportRouter(getDbFn)` 工厂函数，与 `import.routes.ts` 保持一致的依赖注入风格，便于测试注入内存库。
   - `GET /api/report/review-count` → `{ success, report }`。
 - **装配** `src/server/app.ts`：`createApp` 增加可选 `overrideReportRouter` 参数并挂载 `/api/report`。
-- **前端**：新增独立页面 `public/report.html` + `public/report.js`，用纯 DOM/CSS 渲染柱形图（不引入任何图表库，与既有原生前端风格一致）。导入页 `index.html` 顶部增加跳转链接。
+- **前端**：新增独立页面 `public/reviewReport.html` + `public/report.js`，用纯 DOM/CSS 渲染柱形图（不引入任何图表库，与既有原生前端风格一致）。导入页 `index.html` 顶部增加跳转链接。
 
 ### 数据契约
 

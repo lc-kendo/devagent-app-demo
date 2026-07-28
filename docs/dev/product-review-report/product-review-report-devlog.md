@@ -31,21 +31,21 @@ Issue #2 两点诉求：
 - 复用既有 `findAll(db)` 读取全量商品（数据量 ≤1000，内存分桶）。
 - 新增只读接口 `GET /api/report/review-count`，工厂 `createReportRouter(getDbFn)` 与导入路由风格一致，异常经全局错误处理返回 500。
 - `createApp` 增加可选 `overrideReportRouter` 参数并挂载 `/api/report`，不破坏既有签名（原有测试无需改动）。
-- 前端独立页 `public/report.html` + `report.js`：纯 DOM/CSS 柱形图（高度按最大值归一化）+ 数据表 + 汇总条，零新增依赖。
+- 前端独立页 `public/reviewReport.html` + `report.js`：纯 DOM/CSS 柱形图（高度按最大值归一化）+ 数据表 + 汇总条，零新增依赖。
 - 导入页 `index.html` 顶部新增「📊 评论数统计报表」链接；报表页提供「← 返回导入页」链接，双向可达。
 
 ## 3. 验证
 
 - `npm run build`：tsc 零错误。
 - `npm test`：7 个测试文件、76 用例全部通过（新增 `report.test.ts` 8 例 + `report.api.test.ts` 3 例）。
-- 端到端冒烟：本地起服务（PORT=3999）→ 通过导入 API 灌入覆盖全部区间的样本 → `GET /api/report/review-count` 返回分桶 `[2,2,1,1,2,2]`、`missingReviewCount=1`，与预期一致；`report.html` / `report.js` 静态资源 200，导入页与报表页链接互通。
+- 端到端冒烟：本地起服务（PORT=3999）→ 通过导入 API 灌入覆盖全部区间的样本 → `GET /api/report/review-count` 返回分桶 `[2,2,1,1,2,2]`、`missingReviewCount=1`，与预期一致；`reviewReport.html` / `report.js` 静态资源 200，导入页与报表页链接互通。
 
 ## 4. 变更清单
 
 新增：
 - `src/domain/report.ts`
 - `src/server/routes/report.routes.ts`
-- `public/report.html`
+- `public/reviewReport.html`
 - `public/report.js`
 - `tests/report.test.ts`
 - `tests/report.api.test.ts`
@@ -62,8 +62,12 @@ Issue #2 两点诉求：
 
 实现：
 - 抽出可复用组件 `public/report-widget.js`，导出 `renderReport(rootEl)`（拉取 `GET /api/report/review-count` 并在指定容器内渲染汇总条 + 柱形图 + 数据表，含 loading/error 态）。
-- `report.js` 与首页 `app.js` 均复用该组件，消除渲染逻辑重复；`report.html`、`index.html` 均只保留一个 `#report-root` 容器。
+- `report.js` 与首页 `app.js` 均复用该组件，消除渲染逻辑重复；`reviewReport.html`、`index.html` 均只保留一个 `#report-root` 容器。
 - 首页新增常驻 `#section-report` 区块（不受导入状态机 show/hide 控制），页面加载时渲染；**导入成功（DONE）后自动调用 `renderReport` 刷新**，实时反映新入库数据。
-- 首页顶部原跳转链接改为嵌入区块内的「查看完整报表 →」，指向独立页 `report.html`（保留）。
+- 首页顶部原跳转链接改为嵌入区块内的「查看完整报表 →」，指向独立页 `reviewReport.html`（保留）。
 
-新增文件：`public/report-widget.js`；改动：`public/{index.html,app.js,report.html,report.js,style.css}`。构建与 76 项测试保持通过。
+新增文件：`public/report-widget.js`；改动：`public/{index.html,app.js,reviewReport.html,report.js,style.css}`。构建与 76 项测试保持通过。
+
+## 6. 迭代：报表页重命名为 reviewReport.html（2026-07-28）
+
+按需求将独立报表页文件由 `report.html` 重命名为 `reviewReport.html`（`git mv` 保留历史），并同步更新首页跳转链接 `index.html` 中的 `href`。`report.js` / `report-widget.js` 文件名不变，`reviewReport.html` 内 `<script src="report.js">` 引用仍有效。
