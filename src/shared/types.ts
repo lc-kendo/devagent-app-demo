@@ -1,4 +1,18 @@
 import type { Product, RawRow } from '../domain/schema';
+import type { ReviewCountReport } from '../domain/report';
+
+// GET /api/report/review-count - Response 200
+export interface ReviewCountReportResponse {
+  success: true;
+  report: ReviewCountReport;
+}
+
+// GET /api/report/review-count - Response 500
+export interface ReportErrorResponse {
+  success: false;
+  error: ErrorCode;
+  message: string;
+}
 
 // Error codes for file-level errors (400 responses)
 export type ErrorCode =
