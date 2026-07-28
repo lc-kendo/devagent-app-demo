@@ -97,3 +97,37 @@ export interface ValidationResult {
   invalidRows: InvalidRow[];
   summary: ImportSummary;
 }
+
+// ── Sales report ────────────────────────────────────────────────────────────
+
+// One bucket in the sales distribution response
+export interface SalesBucketDTO {
+  index: number;
+  label: string;
+  min: number;
+  max: number | null;
+  count: number;
+}
+
+// GET /api/report/sales/distribution - Response 200
+export interface SalesDistributionResponse {
+  success: true;
+  buckets: SalesBucketDTO[];
+  total: number;
+  defaultBucket: number;
+}
+
+// GET /api/report/sales/products - Response 200
+export interface SalesProductsResponse {
+  success: true;
+  bucket: number;
+  label: string;
+  products: Product[];
+}
+
+// Report error response (400)
+export interface ReportErrorResponse {
+  success: false;
+  error: ErrorCode | 'INVALID_BUCKET';
+  message: string;
+}

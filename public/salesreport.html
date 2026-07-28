@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>商品销量统计</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page-header">
+      <h1>商品销量统计</h1>
+      <a href="index.html" class="nav-link">← 返回商品导入</a>
+    </div>
+
+    <!-- 加载 / 错误 -->
+    <div id="report-loading" class="loading" style="display:none">正在加载...</div>
+    <div id="report-error" class="error-msg" style="display:none"></div>
+
+    <!-- 上部：销量区间柱形图 -->
+    <section id="section-chart" class="section" style="display:none">
+      <h2 class="section-title">各销量区间商品数量</h2>
+      <p class="chart-hint">点击柱形查看对应区间的商品列表</p>
+      <div id="chart" class="chart" role="list"></div>
+    </section>
+
+    <!-- 下部：所选区间商品列表 -->
+    <section id="section-list" class="section" style="display:none">
+      <h2 id="list-title" class="section-title">商品列表</h2>
+      <div id="product-list-container"></div>
+    </section>
+  </div>
+  <script type="module" src="report.js"></script>
+</body>
+</html>
