@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>商品批量导入</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>商品批量导入</h1>
+
+    <!-- 上传区 -->
+    <section id="section-upload" class="section">
+      <div class="upload-area">
+        <label for="csv-input" class="upload-label">
+          <span>选择 CSV 文件</span>
+          <span class="hint">仅支持 .csv 格式，文件大小 ≤ 5MB</span>
+        </label>
+        <input type="file" id="csv-input" accept=".csv" />
+        <div id="upload-error" class="error-msg" style="display:none"></div>
+        <div id="upload-loading" class="loading" style="display:none">正在解析...</div>
+      </div>
+    </section>
+
+    <!-- 预览区 -->
+    <section id="section-preview" class="section" style="display:none">
+      <div id="preview-summary" class="summary-bar"></div>
+      <div id="invalid-rows-container"></div>
+      <div id="valid-rows-container"></div>
+      <div class="confirm-bar">
+        <button id="btn-confirm" class="btn-primary">确认导入</button>
+        <button id="btn-reset-from-preview" class="btn-secondary">重新选择</button>
+        <div id="confirm-loading" class="loading" style="display:none">正在导入...</div>
+      </div>
+    </section>
+
+    <!-- 结果区 -->
+    <section id="section-result" class="section" style="display:none">
+      <div id="result-summary" class="result-cards"></div>
+      <button id="btn-import-again" class="btn-secondary">再次导入</button>
+    </section>
+
+    <!-- 错误区 -->
+    <section id="section-error" class="section" style="display:none">
+      <div class="error-panel">
+        <h3>导入失败</h3>
+        <div id="error-detail"></div>
+        <button id="btn-reset-from-error" class="btn-secondary">重试</button>
+      </div>
+    </section>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
