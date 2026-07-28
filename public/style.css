@@ -40,6 +40,19 @@ h1 {
 /* Report page */
 .report-intro { color: #666; font-size: 14px; margin-bottom: 16px; }
 
+/* Embedded report section header (home page) */
+.report-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.report-header h2 {
+  font-size: 18px;
+  color: #1a1a2e;
+}
+
 .chart {
   display: flex;
   align-items: flex-end;

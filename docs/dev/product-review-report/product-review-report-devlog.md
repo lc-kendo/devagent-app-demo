@@ -55,3 +55,15 @@ Issue #2 两点诉求：
 - `src/server/app.ts`（挂载 `/api/report`）
 - `public/index.html`（新增报表链接 + page-header 布局）
 - `public/style.css`（page-header / nav-link / 柱形图样式）
+
+## 5. 迭代：报表嵌入首页（2026-07-28）
+
+需求追加：把统计报表功能挂到首页（首页即导入页 `index.html`），直接嵌入展示而非仅提供跳转链接。
+
+实现：
+- 抽出可复用组件 `public/report-widget.js`，导出 `renderReport(rootEl)`（拉取 `GET /api/report/review-count` 并在指定容器内渲染汇总条 + 柱形图 + 数据表，含 loading/error 态）。
+- `report.js` 与首页 `app.js` 均复用该组件，消除渲染逻辑重复；`report.html`、`index.html` 均只保留一个 `#report-root` 容器。
+- 首页新增常驻 `#section-report` 区块（不受导入状态机 show/hide 控制），页面加载时渲染；**导入成功（DONE）后自动调用 `renderReport` 刷新**，实时反映新入库数据。
+- 首页顶部原跳转链接改为嵌入区块内的「查看完整报表 →」，指向独立页 `report.html`（保留）。
+
+新增文件：`public/report-widget.js`；改动：`public/{index.html,app.js,report.html,report.js,style.css}`。构建与 76 项测试保持通过。

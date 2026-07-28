@@ -3,6 +3,8 @@
  * State machine: IDLE → UPLOADING → PREVIEW → CONFIRMING → DONE | ERROR
  */
 
+import { renderReport } from './report-widget.js';
+
 // ── State Machine ─────────────────────────────────────────────────────────────
 
 const AppState = {
@@ -287,6 +289,8 @@ async function confirmImport() {
     }
 
     store.setState({ state: AppState.DONE, confirmData: data });
+    // Data changed — refresh the embedded report on the home page.
+    renderReport($('report-root'));
   } catch (err) {
     store.setState({ state: AppState.ERROR, error: `网络错误: ${err.message}` });
   }
@@ -339,4 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initial render
   render();
+
+  // Load the embedded review-count report on the home page.
+  renderReport($('report-root'));
 });
