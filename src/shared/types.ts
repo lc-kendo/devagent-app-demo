@@ -7,10 +7,10 @@ export interface ReviewCountReportResponse {
   report: ReviewCountReport;
 }
 
-// GET /api/report/review-count - Response 500
+// GET /api/report/review-count - Response 500 / report error response
 export interface ReportErrorResponse {
   success: false;
-  error: ErrorCode;
+  error: ErrorCode | 'INVALID_BUCKET';
   message: string;
 }
 
@@ -123,11 +123,4 @@ export interface SalesProductsResponse {
   bucket: number;
   label: string;
   products: Product[];
-}
-
-// Report error response (400)
-export interface ReportErrorResponse {
-  success: false;
-  error: ErrorCode | 'INVALID_BUCKET';
-  message: string;
 }

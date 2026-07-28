@@ -7,7 +7,7 @@ import { upsertMany } from '../src/db/product.repository';
 import type { Product } from '../src/domain/schema';
 import type { DatabaseSync } from 'node:sqlite';
 
-function makeProduct(reviewCount: number | null, id: string): Product {
+function makeReviewProduct(reviewCount: number | null, id: string): Product {
   return {
     ProductID: id,
     ProductName: 'Test',
@@ -19,7 +19,12 @@ function makeProduct(reviewCount: number | null, id: string): Product {
     Rating: null,
     ReviewCount: reviewCount,
     SalesVolume: null,
-function makeProduct(id: string, salesVolume: number | null): Product {
+    LaunchDate: null,
+    Description: null,
+  };
+}
+
+function makeSalesProduct(id: string, salesVolume: number | null): Product {
   return {
     ProductID: id,
     ProductName: `Name ${id}`,
@@ -51,6 +56,14 @@ describe('Report API Integration', () => {
     db.close();
   });
 
+  function seed(volumes: Array<number | null>) {
+    upsertMany(
+      db,
+      volumes.map((v, i) => makeSalesProduct(`P${String(i + 1).padStart(3, '0')}`, v)),
+    );
+  }
+
+  // ── review-count ──────────────────────────────────────────────────
   it('GET /api/report/review-count with no products: 200, all buckets zero', async () => {
     const res = await request(app).get('/api/report/review-count');
     expect(res.status).toBe(200);
@@ -62,12 +75,12 @@ describe('Report API Integration', () => {
 
   it('GET /api/report/review-count buckets products correctly', async () => {
     upsertMany(db, [
-      makeProduct(100, 'P001'),   // 500以下
-      makeProduct(800, 'P002'),   // 500-1500
-      makeProduct(1500, 'P003'),  // 1500-2500
-      makeProduct(5000, 'P004'),  // 4500以上
-      makeProduct(4500, 'P005'),  // 4500以上
-      makeProduct(null, 'P006'),  // missing
+      makeReviewProduct(100, 'P001'),   // 500以下
+      makeReviewProduct(800, 'P002'),   // 500-1500
+      makeReviewProduct(1500, 'P003'),  // 1500-2500
+      makeReviewProduct(5000, 'P004'),  // 4500以上
+      makeReviewProduct(4500, 'P005'),  // 4500以上
+      makeReviewProduct(null, 'P006'),  // missing
     ]);
 
     const res = await request(app).get('/api/report/review-count');
@@ -84,14 +97,9 @@ describe('Report API Integration', () => {
     expect(res.body.report.buckets.map((b: { label: string }) => b.label)).toEqual([
       '500以下', '500-1500', '1500-2500', '2500-3500', '3500-4500', '4500以上',
     ]);
-  function seed(volumes: Array<number | null>) {
-    upsertMany(
-      db,
-      volumes.map((v, i) => makeProduct(`P${String(i + 1).padStart(3, '0')}`, v)),
-    );
-  }
+  });
 
-  // ── distribution ──────────────────────────────────────────────────
+  // ── sales distribution ────────────────────────────────────────────
   it('GET /sales/distribution on empty DB: all zero, defaultBucket=4', async () => {
     const res = await request(app).get('/api/report/sales/distribution');
     expect(res.status).toBe(200);
@@ -116,7 +124,7 @@ describe('Report API Integration', () => {
     expect(res.body.defaultBucket).toBe(1);
   });
 
-  // ── products ──────────────────────────────────────────────────────
+  // ── sales products ────────────────────────────────────────────────
   it('GET /sales/products?bucket=1 returns products sorted by sales desc', async () => {
     seed([600, 1400, 800]);
     const res = await request(app).get('/api/report/sales/products?bucket=1');

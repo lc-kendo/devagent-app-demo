@@ -2,9 +2,6 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { findAll } from '../../db/product.repository';
 import { computeReviewCountReport } from '../../domain/report';
 import { getDb as defaultGetDb } from '../../db/connection';
-import type { ReviewCountReportResponse } from '../../shared/types';
-import { Router, Request, Response } from 'express';
-import { getDb as defaultGetDb } from '../../db/connection';
 import {
   getSalesDistribution,
   findProductsBySalesBucket,
@@ -12,6 +9,7 @@ import {
 } from '../../db/report.repository';
 import { SALES_BUCKETS, isValidBucketIndex } from '../../domain/sales-report';
 import type {
+  ReviewCountReportResponse,
   SalesDistributionResponse,
   SalesProductsResponse,
   ReportErrorResponse,
@@ -36,6 +34,8 @@ export function createReportRouter(getDbFn: GetDbFn = defaultGetDb): Router {
     } catch (err) {
       return next(err);
     }
+  });
+
   // GET /sales/distribution - per-bucket counts + default bucket to display
   router.get('/sales/distribution', (_req: Request, res: Response) => {
     const db = getDbFn();
