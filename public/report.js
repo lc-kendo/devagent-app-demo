@@ -1,4 +1,11 @@
 /**
+ * Standalone review-count report page — thin wrapper around the shared widget.
+ */
+import { renderReport } from './report-widget.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderReport(document.getElementById('report-root'));
+});
  * Sales Report Page
  * Top: bar chart of product counts per sales-volume bucket.
  * Bottom: product list for the selected bucket.

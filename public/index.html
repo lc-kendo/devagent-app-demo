@@ -10,6 +10,7 @@
   <div class="container">
     <div class="page-header">
       <h1>商品批量导入</h1>
+      <a href="reviewReport.html" class="nav-link">📊 评论数统计报表</a>
       <a href="salesreport.html" class="nav-link nav-link-btn">📊 查看销量统计报表 →</a>
     </div>
 
@@ -51,6 +52,15 @@
         <div id="error-detail"></div>
         <button id="btn-reset-from-error" class="btn-secondary">重试</button>
       </div>
+    </section>
+
+    <!-- 评论数统计报表（常驻展示，导入成功后自动刷新） -->
+    <section id="section-report" class="section">
+      <div class="report-header">
+        <h2>评论数统计报表</h2>
+        <a href="reviewReport.html" class="nav-link">查看完整报表 →</a>
+      </div>
+      <div id="report-root"></div>
     </section>
   </div>
   <script type="module" src="app.js"></script>
